@@ -1,5 +1,6 @@
 import utils
 
+from random import randint
 
 class Apple:
     def __init__(self, scr, x: int, y: int, sx: int, sy: int, ch: str, color: int) -> None:
@@ -15,6 +16,11 @@ class Apple:
         self.color = color
 
         self.score = 0
+    
+    def reset(self, x_total, y_total):
+        self.score += 1
+        self.x = randint(self.sx, x_total)
+        self.y = randint(self.sy, y_total)
 
     def render(self):
         utils.drawRect(self.scr, self.x, self.y, self.sx, self.sy, self.ch, self.color)

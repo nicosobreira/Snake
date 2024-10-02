@@ -17,20 +17,24 @@ class Player:
         self.sy = sy
 
         self.vx = -self.sx
-        self.vy = self.sy
+        self.vy = 0
 
         self.ch = ch
         self.color = color
 
     def input(self, key):
         if key in self.KEYS["up"]:
-            self.vy = -self.vy
+            self.vy = -self.sy
+            self.vx = 0
         elif key in self.KEYS["down"]:
-            self.vy = abs(self.vy)
+            self.vy = self.sy
+            self.vx = 0
         elif key in self.KEYS["left"]:
-            self.vx = -self.vx
+            self.vx = -self.sx
+            self.vy = 0
         elif key in self.KEYS["right"]:
-            self.vx = abs(self.vx)
+            self.vx = self.sx
+            self.vy = 0
 
     def update(self, max_size):
         x_head = self.body[0][0]
@@ -41,5 +45,4 @@ class Player:
 
     def render(self):
         for part in self.body:
-            utils.drawRect(self.scr, part[0], part[1],
-                           self.sx, self.sy, self.ch, self.color)
+            utils.drawRect(self.scr, part[0], part[1], self.sx, self.sy, self.ch, self.color)

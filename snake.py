@@ -21,7 +21,7 @@ class Game:
        
         # Color pairs
         curses.init_pair(1, 2, -1) # Green 
-        curses.init_pair(2, 1, -1) # Yellow
+        curses.init_pair(2, 3, -1) # Yellow
         curses.init_pair(3, 4, -1) # Blue
         
         self.state = True
@@ -42,14 +42,16 @@ class Game:
                            self.cols//2,
                            3,
                            2,
-                           "o",
+                           "*",
                            2)
-        
     
 
     def Update(self):
         self.player.update(self.apple.score)
-
+        
+        if (    self.player.body[0][0] == self.apple.x and
+                self.player.body[0][1] == self.apple.y):
+            self.apple.reset(self.rows, self.cols)
         key = self.stdscr.getch()
         
         self.player.input(key)
