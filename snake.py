@@ -1,10 +1,10 @@
 import curses
 
-from Snake import Snake
+from Player import Player
 from Apple import Apple
 
 # TODO Fazer um método render no objeto Apple
-# TODO A Snake sai andando por ai, arrumar isso
+# TODO O Player nake sai andando por ai, arrumar isso
 
 
 class Game:
@@ -27,10 +27,10 @@ class Game:
         self.state = True
         
         self.KEYS = {"q": 113}
-        self.TICKRATE = 50
+        self.TICKRATE = 500
         
         self.cols, self.rows = self.stdscr.getmaxyx()
-        self.snake = Snake(self.stdscr,
+        self.player = Player(self.stdscr,
                       [(self.rows//2, self.cols//2)],
                       3,
                       2,
@@ -48,11 +48,11 @@ class Game:
     
 
     def Update(self):
-        self.snake.update(self.apple.score)
+        self.player.update(self.apple.score)
 
         key = self.stdscr.getch()
         
-        self.snake.input(key)
+        self.player.input(key)
         
         if key == self.KEYS["q"]:
             self.state = False
@@ -61,7 +61,7 @@ class Game:
     def Render(self):
         self.stdscr.erase()
 
-        self.snake.render()
+        self.player.render()
         self.apple.render()
 
         self.stdscr.refresh()

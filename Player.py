@@ -2,34 +2,34 @@ import curses
 import utils
 
 
-class Snake:
+class Player:
     def __init__(self, scr, body: list[tuple], sx: int, sy: int, ch: str, color: int) -> None:
         self.scr = scr
         self.KEYS = {
-            "up": 119,
-            "down": 115,
-            "left": 97,
-            "right": 100,
+            "up": (119, curses.KEY_UP),
+            "down": (115, curses.KEY_DOWN),
+            "left": (97, curses.KEY_LEFT),
+            "right": (100, curses.KEY_RIGHT),
         }
         self.body = body
 
         self.sx = sx
         self.sy = sy
 
-        self.vx = 2
-        self.vy = 2
+        self.vx = -self.sx
+        self.vy = self.sy
 
         self.ch = ch
         self.color = color
 
     def input(self, key):
-        if key == self.KEYS["up"]:
+        if key in self.KEYS["up"]:
             self.vy = -self.vy
-        elif key == self.KEYS["down"]:
+        elif key in self.KEYS["down"]:
             self.vy = abs(self.vy)
-        elif key == self.KEYS["left"]:
+        elif key in self.KEYS["left"]:
             self.vx = -self.vx
-        elif key == self.KEYS["right"]:
+        elif key in self.KEYS["right"]:
             self.vx = abs(self.vx)
 
     def update(self, max_size):
@@ -37,7 +37,7 @@ class Snake:
         y_head = self.body[0][1]
         self.body.append((x_head + self.vx, y_head + self.vy))
         if len(self.body) > max_size:
-            del self.body[0]
+            self.body.pop(0)
 
     def render(self):
         for part in self.body:

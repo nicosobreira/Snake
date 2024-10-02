@@ -15,3 +15,6 @@ class Apple:
         self.color = color
 
         self.score = 0
+
+    def render(self):
+        utils.drawRect(self.scr, self.x, self.y, self.sx, self.sy, self.ch, self.color)
