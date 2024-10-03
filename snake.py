@@ -7,6 +7,10 @@ from Apple import Apple
 # TODO O Player nake sai andando por ai, arrumar isso
 
 
+class Window:
+    def __init__(self, stdscr):
+        pass
+
 class Game:
     def __init__(self):
         self.stdscr = curses.initscr() # Inicia a janela
