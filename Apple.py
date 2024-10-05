@@ -1,26 +1,21 @@
-import utils
-
 from random import randint
 
-class Apple:
-    def __init__(self, scr, x: int, y: int, sx: int, sy: int, ch: str, color: int) -> None:
-        self.scr = scr
+import utils
 
+
+class Apple():
+    def __init__(self, scr: None, x: int, y: int, ch: str, color: int) -> None:
+        self.scr = scr
         self.x = x
         self.y = y
-
-        self.sx = sx
-        self.sy = sy
-
         self.ch = ch
         self.color = color
 
         self.score = 0
-    
-    def reset(self, x_total, y_total):
-        self.score += 1
-        self.x = randint(self.sx, x_total)
-        self.y = randint(self.sy, y_total)
+
+    def restart(self, board):
+        self.x = randint(board.x, board.x + board.sx - 1)
+        self.y = randint(board.y, board.y + board.sy - 1)
 
     def render(self):
-        utils.drawRect(self.scr, self.x, self.y, self.sx, self.sy, self.ch, self.color)
+        utils.addstr(self.scr, self.x, self.y, self.ch, self.color)
