@@ -3,7 +3,7 @@ import utils
 
 
 class Player():
-    def __init__(self, scr: None, x: int, y: int, ch: str, color: int) -> None:
+    def __init__(self, scr, x: int, y: int, ch: str, color: int) -> None:
         self.scr = scr
         self.x = x
         self.y = y
@@ -17,11 +17,11 @@ class Player():
             "right": (100, curses.KEY_RIGHT),
         }
         
-        self.body = {}
+        self.body = [(self.x, self.y)]
         self.vx = -2
         self.vy = 0
 
-    def input(self, key: int):
+    def input(self, key: int) -> None:
         if key in self.KEYS["up"]:
             self.vy = -1
             self.vx = 0
@@ -35,17 +35,12 @@ class Player():
             self.vx = 2
             self.vy = 0
 
-    def restart(self, board):
-        self.x = board.x + board.sx  // 2
-        if board.sx % 2 == 0:
+    def restart(self, board) -> None:
+        self.x = board.x + board.sx // 2
+        if board.sx % 2 != 0:
             self.x += 1
         self.y = board.y + board.sy // 2
     
-    def update(self, max_size):
-        self.x += self.vx
-        self.y += self.vy
-
-    def render(self):
-        utils.addstr(self.scr, self.x, self.y, self.ch, self.color)
-        # for part in self.body:
-        #     utils.addstr(self.scr, part[0], part[1], self.ch["body"], self.color)
+    def render(self) -> None:
+        for part in self.body:
+            utils.addstr(self.scr, part[0], part[1], self.ch, self.color)
