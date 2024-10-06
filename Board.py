@@ -12,6 +12,7 @@ class Board:
         self.color = color
 
         self.score = 0
+        self.max_score = sx * sy
 
 
     def render(self):

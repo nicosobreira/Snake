@@ -14,10 +14,12 @@ class Apple():
 
         self.score = 0
 
-    def restart(self, board, player) -> None:
-        while self.x == player.x:
+    def restart(self, board, body_coordinates: tuple) -> None:
+        self.x = choice(self.possible_x)
+        self.y = randint(board.y, board.y + board.sy - 1)
+        while self.x in body_coordinates[0]:
             self.x = choice(self.possible_x)
-        while self.y == player.y:
+        while self.y in body_coordinates[1]:
             self.y = randint(board.y, board.y + board.sy - 1)
 
     def render(self):

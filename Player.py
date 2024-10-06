@@ -18,23 +18,31 @@ class Player():
         }
         
         self.body = [(self.x, self.y)]
+        self.body_coordinates = self.get_coordinates_body()
         self.vx = -2
         self.vy = 0
 
     def input(self, key: int) -> None:
-        if key in self.KEYS["up"]:
+        # For the input be successful the key must be pressed and you can't go backwards 
+        if key in self.KEYS["up"] and self.vy != 1:
             self.vy = -1
             self.vx = 0
-        elif key in self.KEYS["down"]:
+        elif key in self.KEYS["down"] and self.vy != -1:
             self.vy = 1
             self.vx = 0
-        elif key in self.KEYS["left"]:
+        elif key in self.KEYS["left"] and self.vx != 2:
             self.vx = -2
             self.vy = 0
-        elif key in self.KEYS["right"]:
+        elif key in self.KEYS["right"] and self.vx != -2:
             self.vx = 2
             self.vy = 0
 
+    def get_coordinates_body(self) -> None:
+        self.body_coordinates = ([], [])
+        for _, coordinate in enumerate(self.body):
+            self.body_coordinates[0].append(coordinate[0])
+            self.body_coordinates[1].append(coordinate[1])
+    
     def restart(self, board) -> None:
         self.x = board.x + board.sx // 2
         if board.sx % 2 == 0:
