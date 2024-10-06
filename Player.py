@@ -37,9 +37,10 @@ class Player():
 
     def restart(self, board) -> None:
         self.x = board.x + board.sx // 2
-        if board.sx % 2 != 0:
+        if board.sx % 2 == 0:
             self.x += 1
         self.y = board.y + board.sy // 2
+        self.body = [(self.x, self.y)]
     
     def render(self) -> None:
         for part in self.body:
