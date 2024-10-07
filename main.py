@@ -2,13 +2,13 @@ import curses
 
 from Board import Board
 from Player import Player
-from fruit import Fruit
+from Fruit import Fruit
 
 
 class Game:
-    def __init__(self, stdscr):
-        self.scr = stdscr
-        self.scr.nodelay(True) # Se não tiver input o padrão é -1
+    def __init__(self, stdstdscr):
+        self.stdscr = stdstdscr
+        self.stdscr.nodelay(True) # Se não tiver input o padrão é -1
         
         # Set color
         curses.start_color()
@@ -29,11 +29,11 @@ class Game:
             "q": 113,
             "r": 114
         }
-        self.TICKRATE = 4
+        self.TICKRATE = 2
  
 
         self.board = Board(
-            self.scr,
+            self.stdscr,
             curses.COLS // 2,
             curses.LINES // 2,
             5,
@@ -43,7 +43,7 @@ class Game:
         )
 
         self.player = Player(
-            self.scr,
+            self.stdscr,
             self.board.x + self.board.sx // 2,
             self.board.y + self.board.sy // 2,
             "o",
@@ -54,7 +54,7 @@ class Game:
         possible_x = [i for i in range(self.board.x, self.board.sx + self.board.x, 2)]
         
         self.fruit = Fruit(
-            self.scr,
+            self.stdscr,
             self.board.x + self.board.sx // 2 + 2,
             self.board.y + self.board.sy // 2,
             possible_x,
@@ -72,18 +72,19 @@ class Game:
         self.player.y += self.player.vy
 
         self.player.get_coordinates_body()
-        
 
         # Collision: Player head x Player body
-        for body_part in self.player.body:
-            if (    self.player.x == body_part[0] and
-                    self.player.y == body_part[1]):
+        ###
+        for part in self.player.body:
+            if (    self.player.x == part[0] and
+                    self.player.y == part[1]):
                 self.gameover()
         
         # Insert new head
         self.player.body.insert(0, (self.player.x, self.player.y))
         
         # Collision: Player head x Fruit
+        ###
         if (    self.player.x == self.fruit.x and
                 self.player.y == self.fruit.y):
             self.fruit.restart(self.board, self.player.body_coordinates)
@@ -101,7 +102,7 @@ class Game:
         if self.board.score == self.board.max_score:
             self.state = False
 
-        key = self.scr.getch()
+        key = self.stdscr.getch()
         
         self.player.input(key)
         
@@ -110,13 +111,13 @@ class Game:
 
     
     def Render(self):
-        self.scr.erase()
+        self.stdscr.erase()
         
         self.board.render()
         self.player.render()
         self.fruit.render()
 
-        self.scr.refresh()
+        self.stdscr.refresh()
 
 
     def Loop(self):
@@ -127,8 +128,8 @@ class Game:
             curses.flushinp() # Faz com que os inputs não se "arrastem"
             curses.napms(1000 // self.TICKRATE)
 
-def main(stdscr):
-    game = Game(stdscr)
+def main(stdstdscr):
+    game = Game(stdstdscr)
     game.Loop()
 
 if __name__ == "__main__":

@@ -3,8 +3,12 @@ from random import randint, choice
 import utils
 
 
+# TODO the fruit spawn seams to be tilt to the sides
+# TODO in certain parts the game crash and don't respond to the keyboard
+
+
 class Fruit():
-    def __init__(self, scr, x: int, y: int, possible_x: list[int], ch: str, color: int) -> None:
+    def __init__(self, scr: None, x: int, y: int, possible_x: list[int], ch: str, color: int) -> None:
         self.scr = scr
         self.x = x
         self.possible_x = possible_x
@@ -14,7 +18,7 @@ class Fruit():
 
         self.score = 0
 
-    def restart(self, board, body_coordinates: tuple) -> None:
+    def restart(self, board, body_coordinates) -> None:
         self.x = choice(self.possible_x)
         self.y = randint(board.y, board.y + board.sy - 1)
         while self.x in body_coordinates[0]:

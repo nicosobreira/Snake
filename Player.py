@@ -2,8 +2,11 @@ import curses
 import utils
 
 
+# TODO remake the get_coordinates_body, so it won't be necessary to reset the tuple
+
+
 class Player():
-    def __init__(self, scr, x: int, y: int, ch: str, color: int) -> None:
+    def __init__(self, scr: None, x: int, y: int, ch: str, color: int) -> None:
         self.scr = scr
         self.x = x
         self.y = y
@@ -39,7 +42,7 @@ class Player():
 
     def get_coordinates_body(self) -> None:
         self.body_coordinates = ([], [])
-        for _, coordinate in enumerate(self.body):
+        for coordinate in self.body:
             self.body_coordinates[0].append(coordinate[0])
             self.body_coordinates[1].append(coordinate[1])
     
@@ -51,5 +54,6 @@ class Player():
         self.body = [(self.x, self.y)]
     
     def render(self) -> None:
+        ###
         for part in self.body:
             utils.addstr(self.scr, part[0], part[1], self.ch, self.color)
