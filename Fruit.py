@@ -8,15 +8,11 @@ import utils
 
 
 class Fruit():
-    def __init__(self, scr: None, x: int, y: int, possible_x: list[int], ch: str, color: int) -> None:
+    def __init__(self, scr: None, possible_x: list[int],ch: str, color: int) -> None:
         self.scr = scr
-        self.x = x
         self.possible_x = possible_x
-        self.y = y
         self.ch = ch
         self.color = color
-
-        self.score = 0
 
     def restart(self, board, body_coordinates) -> None:
         self.x = choice(self.possible_x)

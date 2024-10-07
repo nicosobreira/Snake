@@ -6,21 +6,19 @@ import utils
 
 
 class Player():
-    def __init__(self, scr: None, x: int, y: int, ch: str, color: int) -> None:
+    def __init__(self, scr: None, ch: str, color: int) -> None:
         self.scr = scr
-        self.x = x
-        self.y = y
         self.ch = ch
         self.color = color
 
         self.KEYS = {
-            "up": (119, curses.KEY_UP),
-            "down": (115, curses.KEY_DOWN),
-            "left": (97, curses.KEY_LEFT),
-            "right": (100, curses.KEY_RIGHT),
+            "up": (119, 107, curses.KEY_UP),
+            "down": (115, 106, curses.KEY_DOWN),
+            "left": (97, 104, curses.KEY_LEFT),
+            "right": (100, 108, curses.KEY_RIGHT),
         }
         
-        self.body = [(self.x, self.y)]
+        self.body = []
         self.body_coordinates = self.get_coordinates_body()
         self.vx = -2
         self.vy = 0
@@ -48,7 +46,7 @@ class Player():
     
     def restart(self, board) -> None:
         self.x = board.x + board.sx // 2
-        if board.sx % 2 == 0:
+        if board.sx % 2 != 0:
             self.x += 1
         self.y = board.y + board.sy // 2
         self.body = [(self.x, self.y)]

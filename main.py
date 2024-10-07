@@ -36,31 +36,30 @@ class Game:
             self.stdscr,
             curses.COLS // 2,
             curses.LINES // 2,
-            5,
-            5,
+            6,
+            6,
             {"horizontal": "-", "vertical": "|", "border": "+", "inside": "•"},
             (4, 5)
         )
 
         self.player = Player(
             self.stdscr,
-            self.board.x + self.board.sx // 2,
-            self.board.y + self.board.sy // 2,
             "o",
             1
         )
+        self.player.restart(self.board)
+        self.player.get_coordinates_body()
         
-        # Makes the x value fit in a 2x1 grid
+        # Get only the x values that fit in the 2:1 ratio
         possible_x = [i for i in range(self.board.x, self.board.sx + self.board.x, 2)]
         
         self.fruit = Fruit(
             self.stdscr,
-            self.board.x + self.board.sx // 2 + 2,
-            self.board.y + self.board.sy // 2,
             possible_x,
             "*",
             2
         )
+        self.fruit.restart(self.board, self.player.body_coordinates)
 
     def gameover(self):
         self.player.restart(self.board)
@@ -71,14 +70,21 @@ class Game:
         self.player.x += self.player.vx
         self.player.y += self.player.vy
 
-        self.player.get_coordinates_body()
-
+        # Collision: Player x Board
+        if (    self.player.x <= self.board.x - 1 or # Left
+                self.player.x >= self.board.x + self.board.sx or # Right
+                self.player.y <= self.board.y - 1 or # Up
+                self.player.y >= self.board.y + self.board.sy): # Down
+            self.gameover()
+        
         # Collision: Player head x Player body
         ###
         for part in self.player.body:
             if (    self.player.x == part[0] and
                     self.player.y == part[1]):
                 self.gameover()
+        
+        self.player.get_coordinates_body()
         
         # Insert new head
         self.player.body.insert(0, (self.player.x, self.player.y))
@@ -91,17 +97,11 @@ class Game:
             self.board.score += 1
         else:
             self.player.body.pop()
-        
-        # Collision: Player x Board
-        if (    self.player.x <= self.board.x - 1 or # Left
-                self.player.x >= self.board.x + self.board.sx or # Right
-                self.player.y <= self.board.y - 1 or # Up
-                self.player.y >= self.board.y + self.board.sy): # Down
-            self.gameover()
 
         if self.board.score == self.board.max_score:
             self.state = False
 
+        # Input
         key = self.stdscr.getch()
         
         self.player.input(key)
