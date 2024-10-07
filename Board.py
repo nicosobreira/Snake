@@ -14,7 +14,6 @@ class Board:
         self.score = 0
         self.max_score = sx * sy
 
-
     def render(self):
         # Score
         utils.drawRectFrame(self.scr, self.x - 1, self.y - 3, self.sx + 2, 3, self.strings, self.color[0])

@@ -3,7 +3,7 @@ from random import randint, choice
 import utils
 
 
-class Apple():
+class Fruit():
     def __init__(self, scr, x: int, y: int, possible_x: list[int], ch: str, color: int) -> None:
         self.scr = scr
         self.x = x
