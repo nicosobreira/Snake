@@ -14,11 +14,11 @@ class Board:
         self.score = 0
         self.max_score = sx * sy
 
-    def render(self):
+    def render(self) -> None:
         # Score
-        utils.drawRectFrame(self.scr, self.x - 1, self.y - 3, self.sx + 2, 3, self.strings, self.color[0])
+        utils.drawRectFrame(self.scr, self.x - 1, self.y - 4, self.sx + 2, 3, self.strings, self.color[0])
         message = f"{self.score}"
-        utils.addstr(self.scr, self.sx // 2 + self.x - len(message) + 1, self.y - 2, message)
+        utils.addstr(self.scr, self.sx // 2 + self.x - len(message) + 1, self.y - 3, message)
         
         # Board
         utils.drawRectFrame(self.scr, self.x - 1, self.y - 1, self.sx + 2, self.sy + 2, self.strings, self.color[0])

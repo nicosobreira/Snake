@@ -1,4 +1,5 @@
 import curses
+from sys import argv
 
 from Board import Board
 from Player import Player
@@ -6,8 +7,8 @@ from Fruit import Fruit
 
 
 class Game:
-    def __init__(self, stdstdscr):
-        self.stdscr = stdstdscr
+    def __init__(self, stdscr, board_sx: int, board_sy: int) -> None:
+        self.stdscr = stdscr
         self.stdscr.nodelay(True) # Se não tiver input o padrão é -1
         
         # Set color
@@ -29,15 +30,14 @@ class Game:
             "q": 113,
             "r": 114
         }
-        self.TICKRATE = 2
- 
+        self.TICKRATE = 3
 
         self.board = Board(
             self.stdscr,
             curses.COLS // 2,
             curses.LINES // 2,
-            6,
-            6,
+            board_sx,
+            board_sy,
             {"horizontal": "-", "vertical": "|", "border": "+", "inside": "•"},
             (4, 5)
         )
@@ -61,12 +61,12 @@ class Game:
         )
         self.fruit.restart(self.board, self.player.body_coordinates)
 
-    def gameover(self):
+    def gameover(self) -> None:
         self.player.restart(self.board)
         self.fruit.restart(self.board, self.player.body_coordinates)
         self.board.score = 0
 
-    def Update(self):
+    def Update(self) -> None:
         self.player.x += self.player.vx
         self.player.y += self.player.vy
 
@@ -78,7 +78,6 @@ class Game:
             self.gameover()
         
         # Collision: Player head x Player body
-        ###
         for part in self.player.body:
             if (    self.player.x == part[0] and
                     self.player.y == part[1]):
@@ -90,7 +89,6 @@ class Game:
         self.player.body.insert(0, (self.player.x, self.player.y))
         
         # Collision: Player head x Fruit
-        ###
         if (    self.player.x == self.fruit.x and
                 self.player.y == self.fruit.y):
             self.fruit.restart(self.board, self.player.body_coordinates)
@@ -110,7 +108,7 @@ class Game:
             self.state = False
 
     
-    def Render(self):
+    def Render(self) -> None:
         self.stdscr.erase()
         
         self.board.render()
@@ -120,7 +118,7 @@ class Game:
         self.stdscr.refresh()
 
 
-    def Loop(self):
+    def Loop(self) -> None:
         while self.state:
             self.Update()
             self.Render()
@@ -128,8 +126,14 @@ class Game:
             curses.flushinp() # Faz com que os inputs não se "arrastem"
             curses.napms(1000 // self.TICKRATE)
 
-def main(stdstdscr):
-    game = Game(stdstdscr)
+def main(stdscr) -> None:
+    if len(argv) == 3: 
+        board_sx = int(argv[1])
+        board_sy = int(argv[2])
+    else:
+        board_sx = 10
+        board_sy = 10
+    game = Game(stdscr, board_sx, board_sy)
     game.Loop()
 
 if __name__ == "__main__":
