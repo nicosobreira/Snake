@@ -21,8 +21,8 @@ class Game:
         # Color pairs
         curses.init_pair(1, 2, -1) # Green 
         curses.init_pair(2, 3, -1) # Yellow
-        curses.init_pair(4, 5, -1) # Roxo
-        curses.init_pair(5, 8, -1) # Cinza
+        curses.init_pair(4, 5, -1) # Purple
+        curses.init_pair(5, 8, -1) # Gray
         
         self.state = True
         
